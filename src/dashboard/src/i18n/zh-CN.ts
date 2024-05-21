@@ -150,6 +150,24 @@ const zh_CN: Record<string, string> = {
   'menu.docs': '文档',
   'menu.github': 'GitHub',
   'menu.api': 'REST API',
+  'menu.fisco': 'FISCO BCOS',
+
+  'app.fisco.title': 'FISCO BCOS 管理',
+  'app.fisco.table.header.name': '名称',
+  'app.fisco.table.header.type': '类型',
+  'app.fisco.table.header.groupId': '组 ID',
+  'app.fisco.table.header.chainId': '链 ID',
+  'app.fisco.table.header.status': '状态',
+  'app.fisco.table.header.createTime': '创建时间',
+  'app.fisco.form.new.title': '创建 FISCO 节点',
+  'app.fisco.form.name': '节点名称',
+  'app.fisco.form.nameCheck': '请输入节点名称',
+  'app.fisco.form.role': '角色',
+  'app.fisco.form.roleCheck': '请选择角色',
+  'app.fisco.form.groupId': '组 ID',
+  'app.fisco.form.chainId': '链 ID',
+  'app.fisco.create.success': '创建 FISCO 节点成功',
+  'app.fisco.create.fail': '创建 FISCO 节点失败',
 };
 
 export default zh_CN;

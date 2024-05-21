@@ -35,14 +35,13 @@ class FiscoDriver(BlockChainDriver):
         }
 
     def get_node_config_template(self, node_type: str) -> str:
-        raise NotImplementedError("FISCO BCOS does not use config templates")
+        return ""
 
     def get_node_directory(self, organization_name: str, node_type: str, node_domain_name: str) -> str:
         from api_engine.settings import FXBAAS_HOME
         return f"{FXBAAS_HOME}/{organization_name}/fisco/{node_type}s/{node_domain_name}"
 
     def get_node_cmd(self, node_type: str) -> str | None:
-        return None
-
+        return "fisco-bcos"
 
 register_driver(FiscoDriver)

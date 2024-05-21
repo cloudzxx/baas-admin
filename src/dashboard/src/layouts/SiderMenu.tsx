@@ -10,6 +10,7 @@ import {
   ApiOutlined,
   GithubOutlined,
   BookOutlined,
+  FireOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -21,6 +22,7 @@ const menuItems: { path: string; name: string; icon: React.ReactNode }[] = [
   { path: '/channel', name: 'menu.channel', icon: <ApartmentOutlined /> },
   { path: '/chaincode', name: 'menu.chaincode', icon: <CodeOutlined /> },
   { path: '/userManagement', name: 'menu.userManagement', icon: <UserOutlined /> },
+  { path: '/fisco', name: 'menu.fisco', icon: <FireOutlined /> },
 ];
 
 const bottomItems: { path: string; name: string; icon: React.ReactNode; external?: boolean }[] = [

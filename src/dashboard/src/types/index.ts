@@ -52,6 +52,18 @@ export interface ChainCode {
   [key: string]: unknown;
 }
 
+export interface FiscoGroup {
+  id: string;
+  name: string;
+  type: string;
+  blockchain_type: string;
+  group_id: number;
+  chain_id: number;
+  status: string;
+  created_at: string;
+  [key: string]: unknown;
+}
+
 export interface User {
   id: string;
   username: string;

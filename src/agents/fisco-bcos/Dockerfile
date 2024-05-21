@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN mkdir -p baas-admin
+RUN mkdir -p baas-admin && chmod +x entrypoint.sh
 
 EXPOSE 5001
-CMD ["gunicorn", "fisco_bcos.wsgi:application", "--bind", "0.0.0.0:5001", "--workers", "2"]
+CMD ["bash", "entrypoint.sh"]

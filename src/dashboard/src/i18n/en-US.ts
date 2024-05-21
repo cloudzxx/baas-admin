@@ -150,6 +150,24 @@ const en_US: Record<string, string> = {
   'menu.docs': 'Docs',
   'menu.github': 'GitHub',
   'menu.api': 'REST API',
+  'menu.fisco': 'FISCO BCOS',
+
+  'app.fisco.title': 'FISCO BCOS Management',
+  'app.fisco.table.header.name': 'Name',
+  'app.fisco.table.header.type': 'Type',
+  'app.fisco.table.header.groupId': 'Group ID',
+  'app.fisco.table.header.chainId': 'Chain ID',
+  'app.fisco.table.header.status': 'Status',
+  'app.fisco.table.header.createTime': 'Create Time',
+  'app.fisco.form.new.title': 'Create FISCO Node',
+  'app.fisco.form.name': 'Node Name',
+  'app.fisco.form.nameCheck': 'Please enter node name',
+  'app.fisco.form.role': 'Role',
+  'app.fisco.form.roleCheck': 'Please select a role',
+  'app.fisco.form.groupId': 'Group ID',
+  'app.fisco.form.chainId': 'Chain ID',
+  'app.fisco.create.success': 'Create FISCO node succeed',
+  'app.fisco.create.fail': 'Create FISCO node failed',
 };
 
 export default en_US;

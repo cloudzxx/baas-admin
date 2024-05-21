@@ -7,6 +7,7 @@ import type {
   Channel,
   ChainCode,
   User,
+  FiscoGroup,
   LoginPayload,
   RegisterPayload,
 } from '@/types';
@@ -202,5 +203,22 @@ export function useDeleteUser() {
   return useMutation({
     mutationFn: (id: string) => userService.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['users'] }),
+  });
+}
+
+// FISCO BCOS
+export function useFiscoGroups(params?: Record<string, unknown>) {
+  return useQuery({
+    queryKey: ['fisco', params],
+    queryFn: () => apiRequest<{ data: FiscoGroup[]; total: number }>('/fisco', { params }),
+  });
+}
+
+export function useCreateFiscoGroup() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) =>
+      apiRequest('/fisco', { method: 'POST', body: JSON.stringify(data) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['fisco'] }),
   });
 }

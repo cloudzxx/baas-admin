@@ -4,8 +4,8 @@ This directory contains Postman test collections and Newman automation testing c
 
 ## Features
 
-- **FXBaaS Admin Api Engine.postman_collection.json**: Complete API test collection with all RESTful endpoints
-- **FXBaaS Admin Engine CI Test.postman_collection.json**: Streamlined test collection for CI/CD
+- **BaaS Admin Api Engine.postman_collection.json**: Complete API test collection with all RESTful endpoints
+- **BaaS Admin Engine CI Test.postman_collection.json**: Streamlined test collection for CI/CD
 
 ### Test Coverage
 - 🔐 User Authentication (login, registration, token verification)
