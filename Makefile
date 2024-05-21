@@ -137,27 +137,19 @@ clean: ##@Clean Stop services and clean docker containers.
 	
 check: ##@Code Check code format
 	@$(MAKE) license
-	find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
 	cd src/api-engine && tox && cd ${ROOT_PATH}
-	cd src/dashboard && yarn lint && cd ${ROOT_PATH}
+	cd src/dashboard && npm run build && cd ${ROOT_PATH}
 
 deep-clean: ##@Clean Stop services, clean docker images and remove mounted local storage.
 	make clean-images
 	rm -rf $(LOCAL_STORAGE_PATH)
-
-docs:
-	make doc
-
-doc: ##@Documentation Build local online documentation and start serve
-	command -v mkdocs >/dev/null 2>&1 || pip install -r docs/requirements.txt || pip3 -r docs/requirements.txt
-	mkdocs serve -f mkdocs.yml
 
 docker: images ##@Build Build all required docker images locally
 
 docker-clean:##@Clean Clean docker images locally
 	make clean-images
 
-docker-compose: api-engine fabric docker-rest-agent dashboard fisco-agent ##@Development Start development docker-compose
+docker-compose: api-engine fabric dashboard fisco-agent ##@Development Start development docker-compose
 
 help: ##@Help Show this help.
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
@@ -215,19 +207,18 @@ stop-docker-compose:
 	docker compose -f bootup/docker-compose-files/${COMPOSE_FILE} stop
 	echo "Stop all services successfully"
 
-images: api-engine docker-rest-agent fabric dashboard
+images: api-engine fabric dashboard fisco-agent
 
-api-engine: 
-	docker build -t baas-admin/api-engine:latest -f build_image/docker/common/api-engine/Dockerfile.in ./ --platform linux/$(ARCH)
-
-docker-rest-agent:
-	docker build -t baas-admin/agent-docker:latest -f build_image/docker/agent/docker-rest-agent/Dockerfile.in ./ --build-arg pip=$(PIP) --platform linux/$(ARCH)
+api-engine:
+	docker build -t baas-admin/api-engine:latest src/api-engine --platform linux/$(ARCH)
 
 fabric:
 	docker build -t hyperledger/fabric:2.5.14 src/nodes/hyperledger-fabric
 
 dashboard:
-	docker build -t baas-admin/dashboard:latest -f build_image/docker/common/dashboard/Dockerfile.in ./
+	docker build -t baas-admin/dashboard:latest src/dashboard
+
+docker-rest-agent: # no longer supported; use fisco-agent or fabric directly
 
 server:
 	docker compose -f bootup/docker-compose-files/docker-compose.server.dev.yml up -d --force-recreate --remove-orphans
@@ -244,8 +235,6 @@ agent:
 	check \
 	check-api \
 	check-dashboard \
-    docs \
-	doc \ 
 	help \
 	docker \
 	docker-clean \

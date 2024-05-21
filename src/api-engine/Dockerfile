@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.11-slim
 
 # Install software
 RUN apt-get update\
@@ -12,7 +12,7 @@ RUN apt-get update\
 COPY . .
 
 # Install python dependencies
-RUN pip3 install -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Install go
 ENV GO_VERSION=1.25.5
