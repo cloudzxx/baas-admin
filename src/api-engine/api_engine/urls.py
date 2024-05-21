@@ -30,7 +30,7 @@ from api_engine.settings import DEBUG, WEBROOT
 from auth.views import RegisterViewSet, CelloTokenObtainPairView, CelloTokenVerifyView
 from chaincode.views import ChaincodeViewSet
 from channel.views import ChannelViewSet
-from fisco.views import FiscoViewSet
+from fisco.views import FiscoViewSet, FiscoContractViewSet
 from node.views import NodeViewSet
 from organization.views import OrganizationViewSet
 from user.views import UserViewSet
@@ -58,6 +58,7 @@ router.register("register", RegisterViewSet, basename="register")
 router.register("channels", ChannelViewSet, basename="channel")
 router.register("chaincodes", ChaincodeViewSet, basename="chaincode")
 router.register("fisco", FiscoViewSet, basename="fisco")
+router.register("fisco/contracts", FiscoContractViewSet, basename="fisco-contract")
 
 urlpatterns = [path(WEBROOT, include(router.urls + [
     path(

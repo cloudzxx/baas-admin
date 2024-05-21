@@ -12,6 +12,7 @@ import Channel from '@/pages/Channel/Channel';
 import ChainCode from '@/pages/ChainCode/ChainCode';
 import UserManagement from '@/pages/UserManagement/UserManagement';
 import Fisco from '@/pages/Fisco';
+import FiscoContracts from '@/pages/Fisco/Contracts';
 import NotFound from '@/pages/Exception/404';
 import Forbidden from '@/pages/Exception/403';
 import ServerError from '@/pages/Exception/500';
@@ -79,6 +80,7 @@ export default function App() {
                 <Route path="/chaincode" element={<ChainCode />} />
                 <Route path="/userManagement" element={<UserManagement />} />
                 <Route path="/fisco" element={<Fisco />} />
+                <Route path="/fisco/contracts" element={<FiscoContracts />} />
                 <Route path="/403" element={<Forbidden />} />
                 <Route path="/500" element={<ServerError />} />
                 <Route path="/" element={<Navigate to="/overview" replace />} />

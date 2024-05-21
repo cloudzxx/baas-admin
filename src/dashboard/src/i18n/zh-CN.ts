@@ -168,6 +168,26 @@ const zh_CN: Record<string, string> = {
   'app.fisco.form.chainId': '链 ID',
   'app.fisco.create.success': '创建 FISCO 节点成功',
   'app.fisco.create.fail': '创建 FISCO 节点失败',
+
+  'app.fisco.contract.title': '合约管理',
+  'app.fisco.contract.table.header.address': '合约地址',
+  'app.fisco.contract.table.header.name': '合约名称',
+  'app.fisco.contract.table.header.owner': '部署者',
+  'app.fisco.contract.table.header.node': '节点',
+  'app.fisco.contract.table.header.createTime': '创建时间',
+  'app.fisco.contract.deploy.title': '部署合约',
+  'app.fisco.contract.deploy.name': '合约名称',
+  'app.fisco.contract.deploy.bytecode': '字节码 (hex)',
+  'app.fisco.contract.deploy.abi': 'ABI (JSON, 可选)',
+  'app.fisco.contract.deploy.node': '目标节点',
+  'app.fisco.contract.deploy.nodeCheck': '请选择节点',
+  'app.fisco.contract.deploy.success': '合约部署成功',
+  'app.fisco.contract.deploy.fail': '合约部署失败',
+  'app.fisco.contract.call.title': '调用合约',
+  'app.fisco.contract.call.function': '函数',
+  'app.fisco.contract.call.args': '参数（逗号分隔）',
+  'app.fisco.contract.call.write': '写交易',
+  'app.fisco.contract.call.result': '结果',
 };
 
 export default zh_CN;

@@ -168,6 +168,26 @@ const en_US: Record<string, string> = {
   'app.fisco.form.chainId': 'Chain ID',
   'app.fisco.create.success': 'Create FISCO node succeed',
   'app.fisco.create.fail': 'Create FISCO node failed',
+
+  'app.fisco.contract.title': 'Contracts',
+  'app.fisco.contract.table.header.address': 'Contract Address',
+  'app.fisco.contract.table.header.name': 'Contract Name',
+  'app.fisco.contract.table.header.owner': 'Owner',
+  'app.fisco.contract.table.header.node': 'Node',
+  'app.fisco.contract.table.header.createTime': 'Create Time',
+  'app.fisco.contract.deploy.title': 'Deploy Contract',
+  'app.fisco.contract.deploy.name': 'Contract Name',
+  'app.fisco.contract.deploy.bytecode': 'Bytecode (hex)',
+  'app.fisco.contract.deploy.abi': 'ABI (JSON, optional)',
+  'app.fisco.contract.deploy.node': 'Target Node',
+  'app.fisco.contract.deploy.nodeCheck': 'Please select a node',
+  'app.fisco.contract.deploy.success': 'Contract deployed successfully',
+  'app.fisco.contract.deploy.fail': 'Contract deployment failed',
+  'app.fisco.contract.call.title': 'Call Contract',
+  'app.fisco.contract.call.function': 'Function',
+  'app.fisco.contract.call.args': 'Arguments (comma-separated)',
+  'app.fisco.contract.call.write': 'Write transaction',
+  'app.fisco.contract.call.result': 'Result',
 };
 
 export default en_US;

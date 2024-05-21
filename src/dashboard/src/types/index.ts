@@ -64,6 +64,16 @@ export interface FiscoGroup {
   [key: string]: unknown;
 }
 
+export interface FiscoContract {
+  address: string;
+  name: string;
+  abi: string;
+  owner: string;
+  node_name: string;
+  created_at: string;
+  [key: string]: unknown;
+}
+
 export interface User {
   id: string;
   username: string;

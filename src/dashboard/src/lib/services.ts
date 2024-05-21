@@ -8,6 +8,7 @@ import type {
   ChainCode,
   User,
   FiscoGroup,
+  FiscoContract,
   LoginPayload,
   RegisterPayload,
 } from '@/types';
@@ -220,5 +221,32 @@ export function useCreateFiscoGroup() {
     mutationFn: (data: Record<string, unknown>) =>
       apiRequest('/fisco', { method: 'POST', body: JSON.stringify(data) }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['fisco'] }),
+  });
+}
+
+// FISCO BCOS Contracts
+export function useFiscoContracts(params?: Record<string, unknown>) {
+  return useQuery({
+    queryKey: ['fisco-contracts', params],
+    queryFn: () => apiRequest<{ data: FiscoContract[]; total: number }>('/fisco/contracts', { params }),
+  });
+}
+
+export function useDeployFiscoContract() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) =>
+      apiRequest('/fisco/contracts', { method: 'POST', body: JSON.stringify(data) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['fisco-contracts'] }),
+  });
+}
+
+export function useCallFiscoContract() {
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) =>
+      apiRequest('/fisco/contracts/call', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
   });
 }
