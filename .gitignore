@@ -239,6 +239,7 @@ screenshot
 src/dashboard/dist
 src/dashboard/functions
 src/dashboard/lambda/mock/index.js
+src/dashboard/tsconfig.tsbuildinfo
 .config
 .config.old
 
