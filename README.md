@@ -96,10 +96,15 @@ If environment is prepared, then we can start Baas service.
 - **Drf-yasg** - Swagger/OpenAPI documentation
 
 ### Frontend
+- **TypeScript** - Language
 - **React 18** - UI framework
+- **Vite 5** - Build tool
 - **Ant Design 5** - Component library
-- **Umi.js 4** - React application framework
-- **Redux** - State management
+- **Tailwind CSS** - Utility CSS framework
+- **Zustand** - State management
+- **TanStack Query** - Server state & data fetching
+- **React Router v6** - Routing
+- **react-intl** - Internationalization
 
 ### Blockchain Platforms
 - **Hyperledger Fabric** - Agent service for Fabric network management
@@ -116,7 +121,7 @@ If environment is prepared, then we can start Baas service.
 ┌─────────────────────────────────────────────────────────────┐
 │                     Baas Admin                            │
 ├─────────────────────────────────────────────────────────────┤
-│  Dashboard (React + Ant Design)     │   API Engine (Django) │
+│  Dashboard (React + Ant Design + Tailwind)  │   API Engine (Django) │
 │  Port: 8081                        │   Port: 8080          │
 ├─────────────────────────────────────────────────────────────┤
 │                    Agent Services                           │

@@ -1,12 +1,14 @@
-FROM node:20.15
+FROM node:20.15 AS builder
 
 WORKDIR /usr/src/app/
 USER root
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
-RUN export NODE_OPTIONS=--openssl-legacy-provider && yarn --network-timeout 600000 && yarn run build
+RUN npm run build
 
 FROM nginx:1.15.12
-COPY --from=0 /usr/src/app/dist /usr/share/nginx/html
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 COPY baas-admin.conf /etc/nginx/conf.d/
 
 EXPOSE 8081
