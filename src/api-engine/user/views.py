@@ -12,7 +12,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from api.common import ok
+from api.common import ok, with_common_response
 from api.common.response import make_response_serializer
 
 from api.exceptions import CustomError
@@ -23,7 +23,6 @@ from user.serializers import (
     UserList,
     UserPasswordUpdate, UserInfo,
 )
-from api.utils.common import with_common_response
 from user.models import UserProfile
 
 LOG = logging.getLogger(__name__)
@@ -41,7 +40,9 @@ class UserViewSet(viewsets.ViewSet):
     )
     def list(self, request: Request) -> Response:
         serializer = PageQuerySerializer(data=request.GET)
-        p = serializer.get_paginator(UserProfile.objects.filter(organization=request.user.organization))
+        p = serializer.get_paginator(
+            UserProfile.objects.filter(organization=request.user.organization).select_related('organization')
+        )
         return Response(
             status=status.HTTP_200_OK,
             data=ok(UserList({
@@ -78,8 +79,11 @@ class UserViewSet(viewsets.ViewSet):
     )
     def destroy(self, request: Request, pk: Optional[str] = None) -> Response:
         try:
-            UserProfile.objects.get(organzation=request.user.organization, id=pk).delete()
+            UserProfile.objects.get(organization=request.user.organization, id=pk).delete()
+        except UserProfile.DoesNotExist:
+            raise CustomError(detail="User not found")
         except Exception as e:
+            LOG.exception("Failed to delete user %s", pk)
             raise CustomError(detail=str(e))
         return Response(status=status.HTTP_204_NO_CONTENT)
 

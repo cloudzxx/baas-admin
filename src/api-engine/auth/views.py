@@ -10,9 +10,8 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
 
-from api.common import err, ok
+from api.common import err, ok, with_common_response
 from api.common.response import make_response_serializer
-from api.utils.common import with_common_response
 from auth.serializers import RegisterBody, RegisterResponse, LoginBody, LoginSuccessBody, TokenVerifyRequest
 from user.models import UserProfile
 from user.serializers import UserInfo

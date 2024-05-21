@@ -4,11 +4,10 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api.common import ok
+from api.common import ok, with_common_response
 from api.common.response import make_response_serializer
 from channel.models import Channel
 from channel.serializers import ChannelList, ChannelID, ChannelResponse, ChannelCreateBody
-from common.responses import with_common_response
 from common.serializers import PageQuerySerializer
 
 
@@ -28,7 +27,9 @@ class ChannelViewSet(viewsets.ViewSet):
     )
     def list(self, request):
         serializer = PageQuerySerializer(data=request.GET)
-        p = serializer.get_paginator(Channel.objects.filter(organizations__id__contains=request.user.organization.id))
+        p = serializer.get_paginator(
+            Channel.objects.filter(organizations__id=request.user.organization.id).prefetch_related('organizations')
+        )
         return Response(
             status=status.HTTP_200_OK,
             data=ok(ChannelList({

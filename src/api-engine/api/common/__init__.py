@@ -1,4 +1,4 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-from .response import ok, err
+from .response import ok, err, with_common_response

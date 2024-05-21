@@ -5,11 +5,11 @@ from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.common import ok, with_common_response
 from api.common.response import make_response_serializer
 from chaincode.models import Chaincode
 from chaincode.serializers import ChaincodeCommitBody, ChaincodeList, ChaincodeCreateBody, ChaincodeID, ChaincodeRequestBody, ChaincodeResponse, \
     ChaincodeInstallBody, ChaincodeApproveBody
-from common.responses import with_common_response, ok
 from common.serializers import PageQuerySerializer
 
 
@@ -38,7 +38,9 @@ class ChaincodeViewSet(viewsets.ViewSet):
     def list(self, request):
         serializer = PageQuerySerializer(data=request.GET)
         p = serializer.get_paginator(
-            Chaincode.objects.filter(channel__organizations__id__contains=request.user.organization.id),
+            Chaincode.objects.filter(
+                channel__organizations__id=request.user.organization.id
+            ).select_related('channel', 'creator').prefetch_related('channel__organizations'),
         )
         return Response(
             status=status.HTTP_200_OK,

@@ -1,6 +1,9 @@
+import logging
 from typing import Optional
 
 from django.core.paginator import Paginator
+
+LOG = logging.getLogger(__name__)
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
@@ -10,8 +13,7 @@ from rest_framework.response import Response
 from api.common import ok
 from api.common.response import make_response_serializer
 from api.exceptions import CustomError
-from api.utils.common import with_common_response
-from common.responses import err
+from api.common import err, with_common_response
 from common.serializers import PageQuerySerializer
 from organization.models import Organization
 from organization.serializers import OrganizationList, OrganizationResponse
@@ -70,6 +72,9 @@ class OrganizationViewSet(viewsets.ViewSet):
     def destroy(self, request: Request, pk: Optional[str] = None) -> Response:
         try:
             Organization.objects.get(id=pk).delete()
+        except Organization.DoesNotExist:
+            raise CustomError(detail="Organization not found")
         except Exception as e:
+            LOG.exception("Failed to delete organization %s", pk)
             raise CustomError(detail=str(e))
         return Response(status=status.HTTP_204_NO_CONTENT)
