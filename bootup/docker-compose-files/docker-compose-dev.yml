@@ -1,0 +1,87 @@
+# This compose file will deploy the services, and bootup a postgres server.
+
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+#  baas-admin-dashboard: dashboard service for baas-admin
+#  baas-admin-api-engine: api engine service of baas-admin to provide RESTful APIs, listen on 8080
+#  baas-admin-postgres: postgres db 
+
+version: '3.2'
+services:
+  baas-admin-dashboard:
+    image: baas-admin/dashboard
+    container_name: baas-admin-dashboard
+    ports:
+      - "${DASHBOARD_SERVICE_PORT}:8081"
+    networks:
+      - baas-admin-net
+
+  # pg database
+  baas-admin-postgres:
+    image: postgres:12.0
+    container_name: baas-admin-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=api_engine
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - /opt/baas-admin/pgdata:/var/lib/postgresql/data
+    networks:
+      - baas-admin-net
+
+# api engine service of baas-admin 
+  baas-admin-api-engine:
+    image: baas-admin/api-engine
+    container_name: baas-admin-api-engine
+    restart: unless-stopped
+    stdin_open: true
+    dns_search: .
+    environment:
+      - GODEBUG=netdns=go
+      - DB_NAME=api_engine
+      - DB_USER=postgres
+      - DB_PASSWORD=123456
+      - DB_HOST=baas-admin-postgres
+      - DB_PORT=5432
+      - DEBUG=True
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+    ports:
+      - "8080:8080"
+    volumes:
+      - /opt/baas-admin:/opt/baas-admin
+     # - /etc/localtime:/etc/localtime 
+    networks:
+      - baas-admin-net
+
+  # baas-admin docker agent may deploy to an individual server. This cofig only serves development purpose.
+  baas-admin-docker-agent:
+    image: baas-admin/agent-docker
+    container_name: baas-admin-docker-agent
+    hostname: baas-admin-docker-agent
+    restart: always
+    ports:
+      - "2375:2375"
+      - "5001:5001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_URL=unix://var/run/docker.sock
+      - STORAGE_PATH=/opt/hyperledger
+    networks:
+      - baas-admin-net
+
+networks:
+  baas-admin-net:
+    name: baas-admin-net
+
+volumes:
+  baas-admin-api-engine:
+  baas-admin-postgres:
+  baas-admin-dashboard:
+  baas-admin-docker-agent:

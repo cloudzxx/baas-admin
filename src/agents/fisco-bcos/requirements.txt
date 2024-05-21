@@ -1,0 +1,4 @@
+Django==4.2.16
+djangorestframework==3.15.2
+drf-spectacular==0.28.0
+docker==7.1.0

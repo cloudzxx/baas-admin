@@ -1,0 +1,15 @@
+apiVersion: v1
+description: Cello is a Block As a service in hyperledger.
+name: baas-admin-master
+version: 0.1.0
+keywords:
+- Hyperledger
+- BAAS
+- Cello
+home: https://www.hyperledger.org/projects/baas-admin
+icon: https://wiki.hyperledger.org/_media/projects/fxbaas_logo_color.png
+sources:
+- https://github.com/hyperledger/baas-admin
+maintainers:
+- name: Baohua Yang
+  email: yangbaohua@gmail.com

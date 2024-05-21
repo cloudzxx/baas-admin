@@ -1,0 +1,83 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+import os
+from subprocess import check_call
+
+
+import logging
+
+from api_engine.settings import FXBAAS_HOME, FABRIC_TOOL, FABRIC_VERSION
+
+LOG = logging.getLogger(__name__)
+
+
+class CryptoGen:
+    """Class represents crypto-config tool."""
+
+    def __init__(
+        self,
+        name,
+        filepath=FXBAAS_HOME,
+        cryptogen=FABRIC_TOOL,
+        version=FABRIC_VERSION,
+    ):
+        """init CryptoGen
+        param:
+            name: organization's name
+            cryptogen: tool path
+            version: version
+            filepath: baas-admin's working directory
+        return:
+        """
+        self.cryptogen = cryptogen + "/cryptogen"
+        self.filepath = filepath
+        self.version = version
+        self.name = name
+
+    def generate(self, output="crypto-config", config="crypto-config.yaml"):
+        """Generate key material
+        param:
+            output: The output directory in which to place artifacts
+            config: The configuration template to use
+        return:
+        """
+        try:
+            org_filepath = os.path.join(self.filepath, self.name)
+            command = [
+                self.cryptogen,
+                "generate",
+                "--output={}".format(os.path.join(org_filepath, output)),
+                "--config={}".format(os.path.join(org_filepath, config)),
+            ]
+
+            LOG.info(" ".join(command))
+
+            check_call(command)
+
+        except Exception as e:
+            err_msg = "cryptogen generate fail for {}!".format(e)
+            raise Exception(err_msg)
+
+    def extend(self, input="crypto-config", config="crypto-config.yaml"):
+        """Extend existing network
+        param:
+            input: The input directory in which existing network place
+            config: The configuration template to use
+        return:
+        """
+        try:
+            command = [
+                self.cryptogen,
+                "extend",
+                "--input={}/{}/{}".format(self.filepath, self.name, input),
+                "--config={}/{}/{}".format(self.filepath, self.name, config),
+            ]
+
+            LOG.info(" ".join(command))
+
+            check_call(command)
+
+        except Exception as e:
+            err_msg = "cryptogen extend fail for {}!".format(e)
+            raise Exception(err_msg)

@@ -1,0 +1,27 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+services:
+  baas-admin-docker-agent:
+    image: baas-admin/agent-docker
+    container_name: baas-admin-docker-agent
+    hostname: baas-admin-docker-agent
+    restart: always
+    ports:
+      - "2375:2375"
+      - "5001:5001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_URL=unix://var/run/docker.sock
+      - STORAGE_PATH=${BAAS_STORAGE_PATH:-/opt/baas-admin}/hyperledger
+    networks:
+      - baas-admin-net
+
+networks:
+  baas-admin-net:
+    name: baas-admin-net
+
+volumes:
+  baas-admin-docker-agent:

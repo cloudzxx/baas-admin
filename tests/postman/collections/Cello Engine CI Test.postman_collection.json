@@ -1,0 +1,479 @@
+{
+	"info": {
+		"name": "FXBaaS Admin Engine CI Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"foo@email.com\",\n\t\"password\": \"foo\",\n\t\"org_name\": \"org1.foo.com\",\n\t\"agent_url\": \"http://baas-admin-hyperledger-fabric-agent:8080/api/v1/\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register"
+					]
+				},
+				"description": "Register new user with organization"
+			}
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"if (pm.response.code === 200) {",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"token\", jsonData.data.token);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"foo@email.com\",\n\t\"password\": \"foo\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				},
+				"description": "Login with email and password to get access token"
+			}
+		},
+		{
+			"name": "Create A Peer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"peer0\",\n\t\"type\": \"PEER\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/nodes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"nodes"
+					]
+				},
+				"description": "Create a new peer"
+			}
+		},
+		{
+			"name": "Create An Orderer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"orderer0\",\n\t\"type\": \"ORDERER\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/nodes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"nodes"
+					]
+				},
+				"description": "Create a new orderer"
+			}
+		},
+		{
+			"name": "Create A Channel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"channel_id\", jsonData.data.id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"channel0\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/channels",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"channels"
+					]
+				},
+				"description": "Create a new channel"
+			}
+		},
+		{
+			"name": "Upload a Chaincode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"chaincode_id\", jsonData.data.id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "basic",
+							"type": "text"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "text"
+						},
+						{
+							"key": "sequence",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "package",
+							"type": "file",
+							"src": ["basic.tar.gz"]
+						},
+						{
+							"key": "channel",
+							"value": "{{channel_id}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/chaincodes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"chaincodes"
+					]
+				},
+				"description": "Create a new chaincode"
+			}
+		},
+		{
+			"name": "Wait for the chaincode to be approved",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"url": {
+					"raw": "https://postman-echo.com/delay/10",
+					"host": [
+						"postman-echo.com"
+					],
+					"path": [
+						"delay",
+						"10"
+					],
+					"query": []
+				},
+				"description": "Wait a minute"
+			}
+		},
+		{
+			"name": "Check if the chaincode is approved",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();",
+							"let chaincode = json.data.data[0];",
+							"let status = chaincode.status;",
+							"",
+							"let retries = pm.collectionVariables.get(\"retries\");",
+							"if (status !== \"APPROVED\") {",
+							"    if (retries < 30) {",
+							"        console.log(`Not ready (status=${status}), retry #${retries}`);",
+							"        pm.collectionVariables.set(\"retries\", retries + 1);",
+							"        pm.execution.setNextRequest(\"Wait for the chaincode to be approved\");",
+							"    } else {",
+							"        pm.expect.fail(`Max retries reached. Last status: ${status}`);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/chaincodes?page=1&per_page=10",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"chaincodes"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "per_page",
+							"value": "10"
+						}
+					]
+				},
+				"description": "List chaincodes to check if it's been approved"
+			}
+		},
+		{
+			"name": "Commit the chaincode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{base_url}}/api/v1/chaincodes/{{chaincode_id}}/commit",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"chaincodes",
+						"{{chaincode_id}}",
+						"commit"
+					]
+				},
+				"description": "Commit the chaincode"
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "channel_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "retries",
+			"value": 0,
+			"type": "number"
+		},
+		{
+			"key": "chaincode_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 

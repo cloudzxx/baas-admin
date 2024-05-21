@@ -1,0 +1,9 @@
+.git
+.tox
+test*
+Dockerfile*
+*~
+screenshots
+**/node_modules
+**/.temp
+**/__pycache__

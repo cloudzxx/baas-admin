@@ -1,0 +1,4 @@
+baas_fisco_bcos_agent
+**/static
+__pycache__/
+*.pyc

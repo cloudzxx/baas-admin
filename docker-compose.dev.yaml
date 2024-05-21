@@ -1,0 +1,81 @@
+services:
+  baas-admin-fisco-agent:
+    build:
+      context: ./src/agents/fisco-bcos
+    image: baas-admin/fisco-agent:latest
+    container_name: baas-admin-fisco-agent
+    restart: unless-stopped
+    ports:
+      - "5002:5001"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=change_me
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - baas-admin-net
+
+  baas-admin-dashboard:
+    build:
+      context: ./src/dashboard
+    image: baas-admin/dashboard:latest
+    container_name: baas-admin-dashboard
+    restart: unless-stopped
+    ports:
+      - "${DASHBOARD_SERVICE_PORT:-8081}:8081"
+    networks:
+      - baas-admin-net
+    depends_on:
+      - baas-admin-api-engine
+
+  baas-admin-postgres:
+    image: postgres:12.0
+    container_name: baas-admin-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=api_engine
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - baas-admin-postgres:/var/lib/postgresql/data
+    networks:
+      - baas-admin-net
+
+  baas-admin-api-engine:
+    build:
+      context: ./src/api-engine
+    image: baas-admin/api-engine:latest
+    container_name: baas-admin-api-engine
+    restart: unless-stopped
+    stdin_open: true
+    dns_search: .
+    environment:
+      - GODEBUG=netdns=go
+      - DB_NAME=api_engine
+      - DB_USER=postgres
+      - DB_PASSWORD=123456
+      - DB_HOST=baas-admin-postgres
+      - DB_PORT=5432
+      - DEBUG=True
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - baas-admin-api-engine-chaincode:/media
+    networks:
+      - baas-admin-net
+    depends_on:
+      - baas-admin-postgres
+
+networks:
+  baas-admin-net:
+    name: baas-admin-net
+
+volumes:
+  baas-admin-postgres:
+  baas-admin-api-engine:
+  baas-admin-api-engine-chaincode:
